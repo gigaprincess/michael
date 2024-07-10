@@ -1,0 +1,38 @@
+[gd_scene load_steps=6 format=3 uid="uid://blc3wch3blepp"]
+
+[ext_resource type="Script" path="res://Scripts/state_machine.gd" id="1_rpirh"]
+[ext_resource type="Script" path="res://Scripts/fall.gd" id="2_g3rjt"]
+[ext_resource type="Script" path="res://Scripts/idle.gd" id="3_5hmu5"]
+[ext_resource type="Script" path="res://Scripts/jump.gd" id="4_jsxhb"]
+[ext_resource type="Script" path="res://Scripts/run.gd" id="5_ort12"]
+
+[node name="state_machine" type="Node" node_paths=PackedStringArray("starting_state")]
+script = ExtResource("1_rpirh")
+starting_state = NodePath("jump")
+
+[node name="fall" type="Node" parent="." node_paths=PackedStringArray("idle_state", "move_state")]
+script = ExtResource("2_g3rjt")
+idle_state = NodePath("../idle")
+move_state = NodePath("../move")
+animation_name = "fall"
+
+[node name="idle" type="Node" parent="." node_paths=PackedStringArray("fall_state", "jump_state", "move_state")]
+script = ExtResource("3_5hmu5")
+fall_state = NodePath("../fall")
+jump_state = NodePath("../jump")
+move_state = NodePath("../move")
+animation_name = "idle"
+
+[node name="jump" type="Node2D" parent="." node_paths=PackedStringArray("fall_state", "idle_state", "move_state")]
+script = ExtResource("4_jsxhb")
+fall_state = NodePath("../fall")
+idle_state = NodePath("../idle")
+move_state = NodePath("../move")
+animation_name = "jump"
+
+[node name="move" type="Node" parent="." node_paths=PackedStringArray("fall_state", "idle_state", "jump_state")]
+script = ExtResource("5_ort12")
+fall_state = NodePath("../fall")
+idle_state = NodePath("../idle")
+jump_state = NodePath("../jump")
+animation_name = "walk"
